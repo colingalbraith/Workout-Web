@@ -2,6 +2,12 @@
 A python, css, js, html based online workout app to let users track progress and progressive overload! Desktop and mobile friendly, using python as backend!
 
 
+
+
+https://github.com/user-attachments/assets/e592a666-eb07-4c39-95e4-47e664406c2d
+
+
+
 ![image](https://github.com/user-attachments/assets/70d8e5a2-9ff8-4487-84f3-eb1103d9a58d)
 
 ![image](https://github.com/user-attachments/assets/6cec17cd-9fb2-4a0a-833d-7e0e423d3fd1)
