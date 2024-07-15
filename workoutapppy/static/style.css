@@ -1,0 +1,330 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    width: 300px;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease-in-out;
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+}
+
+.fade-out {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+.login-box, .calendar-box, .workout-box {
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.textbox {
+    margin: 10px 0;
+    position: relative;
+}
+
+.textbox input, .textbox select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    background: #f2f2f2;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    margin: 0 auto;
+    display: block;
+}
+
+.btn {
+    display: inline-block;
+    margin: 10px 5px;
+    padding: 10px 20px;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background: #555;
+}
+
+.delete-btn {
+    background: #ff4d4d;
+}
+
+.delete-btn:hover {
+    background: #ff1a1a;
+}
+
+.nav-links {
+    margin: 20px 0;
+}
+
+.nav-links a {
+    margin: 0 10px;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-links a:hover {
+    color: #555;
+}
+
+.calendar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.week {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.day, .day-label {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    margin: 5px;
+}
+
+.day-label {
+    font-weight: bold;
+}
+
+.highlighted {
+    background-color: lightgreen;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+a:hover {
+    color: green;
+}
+
+.empty {
+    background-color: transparent;
+}
+
+form {
+    margin: 20px 0;
+}
+
+input, select, button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 80%;
+}
+
+.back-link {
+    display: block;
+    margin-bottom: 20px;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.back-link:hover {
+    color: #555;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    background: white;
+    margin-right: 10px;
+}
+
+input[type="checkbox"]:checked {
+    background: #333;
+}
+
+input[type="checkbox"]:checked::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: white;
+}
+
+label {
+    flex-grow: 1;
+}
+
+.popup {
+    display: none;
+    position: absolute;
+    background: white;
+    border: 1px solid #333;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+@media (max-width: 600px) {
+    body {
+        height: auto;
+        padding: 20px;
+        justify-content: flex-start;
+        overflow: auto;
+    }
+    
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+
+    .textbox input, .textbox select, input, select, button {
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-links a {
+        margin: 10px 0;
+    }
+
+    .calendar-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .calendar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .week {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .day, .day-label {
+        width: 13%;
+        text-align: center;
+    }
+
+    .highlighted {
+        background-color: lightgreen;
+    }
+
+    .chart-container {
+        display: none;
+        width: 100%;
+        height: 400px;
+        margin-top: 20px;
+    }
+}
+
+
+
+.logged-sets-container {
+    max-height: 200px; /* Adjust this value as needed */
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+/* Styles for the list of logged sets */
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    background: white;
+    margin-right: 10px;
+}
+
+input[type="checkbox"]:checked {
+    background: #333;
+}
+
+input[type="checkbox"]:checked::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: white;
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calendar - Gym Progress Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='animations.css') }}">
+    <style>
+        .tooltip {
+            display: none;
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .tooltip.small {
+            width: auto;
+            padding: 5px;
+        }
+        .tooltip h3 {
+            margin: 0;
+            font-size: 14px;
+        }
+        .tooltip p {
+            margin: 5px 0;
+            font-size: 12px;
+        }
+        .tooltip canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container fade-in">
+        <div class="calendar-box">
+            <h1>Calendar - {{ year }}-{{ '%02d'|format(month) }}</h1>
+            <div class="nav-links">
+                <a href="{{ url_for('calendar', year=prev_month.year, month=prev_month.month) }}">&lt; Previous Month</a>
+                <a href="{{ url_for('calendar', year=next_month.year, month=next_month.month) }}">Next Month &gt;</a>
+            </div>
+            <div class="calendar">
+                <div class="week">
+                    <div class="day-label">Sun</div>
+                    <div class="day-label">Mon</div>
+                    <div class="day-label">Tue</div>
+                    <div class="day-label">Wed</div>
+                    <div class="day-label">Thu</div>
+                    <div class="day-label">Fri</div>
+                    <div class="day-label">Sat</div>
+                </div>
+                <div class="week">
+                    {% for day in days %}
+                        {% if day %}
+                            <div class="day {% if day == today %}highlighted{% endif %}" data-date="{{ day.strftime('%Y-%m-%d') }}" data-workouts='{{ workouts[day.strftime('%Y-%m-%d')] | tojson }}'>
+                                <a href="{{ url_for('workout', date=day.strftime('%Y-%m-%d')) }}">{{ day.day }}</a>
+                            </div>
+                        {% else %}
+                            <div class="day empty"></div>
+                        {% endif %}
+                        {% if loop.index % 7 == 0 %}
+                            </div><div class="week">
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tooltip" id="tooltip">
+        <h3>Workouts</h3>
+        <p id="tooltip-content"></p>
+        <canvas id="tooltip-chart" width="300" height="200"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

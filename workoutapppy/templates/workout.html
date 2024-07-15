@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Log Workout - Gym Progress Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='animations.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='sliders.css') }}">
+</head>
+<body>
+    <div class="container fade-in">
+        <div class="workout-box">
+            <h1>Workouts for {{ date }}</h1>
+            <a class="back-link" href="{{ url_for('calendar', year=date[:4], month=date[5:7]) }}">Back to Calendar</a>
+            <form method="post" id="workout-form">
+                <input type="hidden" id="last-body-part" name="last_body_part" value="{{ request.form.get('last_body_part', '') }}">
+                <input type="hidden" id="last-exercise" name="last_exercise" value="{{ request.form.get('last_exercise', '') }}">
+                <div class="textbox">
+                    <select name="body_part" id="body-part" required>
+                        <option value="" disabled selected>Select Muscle Group</option>
+                        <option value="chest">Chest</option>
+                        <option value="back">Back</option>
+                        <option value="hamstrings">Hamstrings</option>
+                        <option value="quads">Quads</option>
+                        <option value="triceps">Triceps</option>
+                        <option value="biceps">Biceps</option>
+                        <option value="shoulders">Shoulders</option>
+                    </select>
+                </div>
+                <div class="textbox">
+                    <select name="exercise" id="exercise" required>
+                        <option value="" disabled selected>Select Exercise</option>
+                        <!-- Chest exercises -->
+                        <option value="barbell_bench_press" data-group="chest">Barbell Bench Press</option>
+                        <option value="dumbbell_bench_press" data-group="chest">Dumbbell Bench Press</option>
+                        <option value="incline_dumbbell_press" data-group="chest">Incline Dumbbell Press</option>
+                        <option value="decline_dumbbell_press" data-group="chest">Decline Dumbbell Press</option>
+                        <option value="push_ups" data-group="chest">Push-ups</option>
+                        <!-- Back exercises -->
+                        <option value="pull_ups" data-group="back">Pull-ups</option>
+                        <option value="barbell_rows" data-group="back">Barbell Rows</option>
+                        <option value="seated_cable_rows" data-group="back">Seated Cable Rows</option>
+                        <option value="lat_pulldown" data-group="back">Lat Pulldown</option>
+                        <option value="dumbbell_rows" data-group="back">Dumbbell Rows</option>
+                        <!-- Hamstrings exercises -->
+                        <option value="barbell_deadlifts" data-group="hamstrings">Barbell Deadlifts</option>
+                        <option value="romanian_deadlifts" data-group="hamstrings">Romanian Deadlifts</option>
+                        <option value="leg_curls" data-group="hamstrings">Leg Curls</option>
+                        <option value="hamstring_bridges" data-group="hamstrings">Hamstring Bridges</option>
+                        <!-- Quads exercises -->
+                        <option value="barbell_squats" data-group="quads">Barbell Squats</option>
+                        <option value="leg_press" data-group="quads">Leg Press</option>
+                        <option value="lunges" data-group="quads">Lunges</option>
+                        <option value="leg_extensions" data-group="quads">Leg Extensions</option>
+                        <!-- Triceps exercises -->
+                        <option value="barbell_triceps_extensions" data-group="triceps">Barbell Triceps Extensions</option>
+                        <option value="overhead_triceps_extensions" data-group="triceps">Overhead Triceps Extensions</option>
+                        <!-- Biceps exercises -->
+                        <option value="barbell_curls" data-group="biceps">Barbell Curls</option>
+                        <option value="dumbbell_curls" data-group="biceps">Dumbbell Curls</option>
+                        <option value="hammer_curls" data-group="biceps">Hammer Curls</option>
+                        <option value="concentration_curls" data-group="biceps">Concentration Curls</option>
+                        <!-- Shoulders exercises -->
+                        <option value="military_press" data-group="shoulders">Military Press (Barbell or Dumbbell)</option>
+                        <option value="lateral_raises" data-group="shoulders">Lateral Raises</option>
+                        <option value="front_raises" data-group="shoulders">Front Raises</option>
+                        <option value="rear_delt_flyes" data-group="shoulders">Rear Delt Flyes</option>
+                    </select>
+                </div>
+                <div class="textbox">
+                    <label for="weight">Weight (lbs):</label>
+                    <input type="range" name="weight" id="weight" min="0" max="500" step="5" required>
+                    <span id="weight-value">0</span> lbs
+                </div>
+                <div class="textbox">
+                    <label for="reps">Reps:</label>
+                    <input type="range" name="reps" id="reps" min="1" max="50" step="1" required>
+                    <span id="reps-value">1</span> reps
+                </div>
+                <div class="textbox">
+                    <label for="notes">Notes:</label>
+                    <input type="text" name="notes" id="notes">
+                </div>
+                <button class="btn" type="submit" name="action" value="Add Set">Add Set</button>
+            </form>
+            {% if workouts %}
+                <h2>Logged Sets</h2>
+                <form method="post" id="delete-form">
+                    <ul>
+                        {% for index in range(workouts|length) %}
+                            <li>
+                                <input type="checkbox" name="selected_sets" value="{{ index }}" id="set-{{ index }}">
+                                <label for="set-{{ index }}">
+                                    {{ workouts[index].body_part }} - {{ workouts[index].exercise }}: {{ workouts[index].weight }} lbs, {{ workouts[index].reps }} reps
+                                    {% if workouts[index].notes %}
+                                        (Notes: {{ workouts[index].notes }})
+                                    {% endif %}
+                                </label>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <button class="btn delete-btn" type="submit" name="action" value="Delete">Delete Selected Set(s)</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Event listeners for weight and reps sliders
+            const weightSlider = document.getElementById('weight');
+            const weightValue = document.getElementById('weight-value');
+            const repsSlider = document.getElementById('reps');
+            const repsValue = document.getElementById('reps-value');
+
+            weightSlider.addEventListener('input', function() {
+                weightValue.textContent = this.value;
+            });
+
+            repsSlider.addEventListener('input', function() {
+                repsValue.textContent = this.value;
+            });
+
+            // Filter exercises based on selected body part
+            const bodyPartSelector = document.getElementById('body-part');
+            const exerciseSelector = document.getElementById('exercise');
+
+            bodyPartSelector.addEventListener('change', function() {
+                const selectedGroup = this.value;
+                const options = exerciseSelector.querySelectorAll('option');
+
+                // Reset the exercise selector
+                exerciseSelector.value = '';
+                options.forEach(option => {
+                    if (option.dataset.group === selectedGroup) {
+                        option.style.display = 'block'; // Show option
+                    } else {
+                        option.style.display = 'none'; // Hide option
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

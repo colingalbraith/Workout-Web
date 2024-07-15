@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - Gym Progress Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='animations.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <h1>Gym Progress Tracker</h1>
+            <form method="post">
+                <div class="textbox">
+                    <input type="text" name="email" placeholder="Enter email" required>
+                </div>
+                <div class="textbox">
+                    <input type="password" name="password" placeholder="Enter password" required>
+                </div>
+                <button class="btn" type="submit">Login</button>
+                <a href="{{ url_for('register') }}" class="btn">Register</a>
+                <a href="#" class="btn">Reset Password</a>
+            </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
