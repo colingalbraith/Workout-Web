@@ -4,7 +4,11 @@ A python, css, js, html based online workout app to let users track progress and
 
 
 
-https://github.com/user-attachments/assets/e592a666-eb07-4c39-95e4-47e664406c2d
+
+
+https://github.com/user-attachments/assets/14394509-6c32-4767-945c-cd74ff09053b
+
+
 
 
 
